@@ -1,8 +1,9 @@
 <template>
   <div class="home">
     home page
-    <router-link to='/signin' replace>signin</router-link>
-    <router-link to='/login' replace>login</router-link>
+    <router-link to='/signin' v-show="!isLogin" replace>signin</router-link>
+    <router-link to='/register' v-show="!isLogin" replace>register</router-link>
+    <router-link to='/secrete' replace>secrete page</router-link>
     <router-view></router-view>
   </div>
 
@@ -14,11 +15,16 @@ export default {
   name: 'Home',
   data () {
     return {
-
+      isLogin:false
+    }
+  },
+  methods:{
+    checkLogStatus(){
+      return this.$store.state.isLogin;
     }
   },
   mounted() {
-
+    this.isLogin = this.checkLogStatus();
   }
 }
 </script>

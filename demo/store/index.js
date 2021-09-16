@@ -7,50 +7,33 @@ let store = new Vuex.Store({
     errorMsg:{
       empty:'Please enter your nickname',
       duplicated:'This nickname has already been taken,please pick a new one',
-      error:"This nick name doesn't exist"
-    }
+      error:"This nick name doesn't exist",
+      violation:"You cannot use other user's nickname to log in directly,please use your own account to log in or register a new nickname"
+    },
+    token:null,
+    isLogin:false
   },
   mutations:{
     exceptionHandle(state,errorType){
       switch (errorType){
-        case 'empty':
+        case errorType:
           alert(state.errorMsg[errorType]);
       }
     },
-    inc(state){
-      state.msg++;
+    setToken(state, token){
+      state.token = token;
     },
-    des(state){
-      state.msg--;
+    getLoginStatus(state){
+      return state.isLogin;
     },
-    addCount(state,value){
-      state.msg = (state.msg) + value;
+    setLoginStatus(state){
+      state.isLogin = !state.isLogin;
     }
   },
   actions:{
-    updateMsg(context){
-
-    }
-
   },
   getters:{
-    // exceptionHandle(state,errorType){
-    //   switch (errorType){
-    //     case 'empty':
-    //       alert(state.errorMsg.errorType);
-    //
-    //   }
-    // }
 
-
-    // powerMsg(state){
-    //   return (state.msg)*(state.msg);
-    // },
-    // passing(state){
-    //   return state.students.filter(function(s){
-    //     return s.score > 60;
-    //   })
-    // }
   },
   modules:{}
 });
