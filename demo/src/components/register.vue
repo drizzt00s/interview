@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <label>Please Enter Your Nickname to login</label>
+    <label>Please Enter Your Nickname to register</label>
     <input type="text" id="signupNick" v-model="nickName" />
     <span class="error hide"></span>
     <router-link to='/' replace>home</router-link>
