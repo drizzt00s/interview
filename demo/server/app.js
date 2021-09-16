@@ -13,7 +13,6 @@ var app = express();
 
 app.use(cors());
 
-
 app.use(bodyParser.urlencoded({
   extended: true
 }));
@@ -108,53 +107,46 @@ app.post('/sign_up',function(req,res){
 
 
 
+
+
 app.post('/sign_in',function (req,res) {
-  //signin
   const n = req.body.nickName;
-  let violation = false;
+  const sql = "SELECT * From nicknames WHERE nickName" + "=?";
+  const sqlValue = [n];
 
-  if(global.users.length > 0){
-    for(let i = 0; i < global.users.length; i++){
-      if(n === global.users[i]){
-        violation = true;
-        break;
-      }
-    }
-  }
-
-  if(violation){
-      res.send({
-         error:1,
-         msg:'violation'
-      });
-  }else{
-    global.users.push(n);
-
-    const sql = "SELECT * From nicknames WHERE nickName" + "=?";
-    const sqlValue = [n];
-
-    const pool = global.pool ? global.pool :this.createConnectionPool(
-      db_config.host,
-      db_config.username,
-      db_config.password,
-      db_config.port,
-      db_config.database,db_config.pool);
-
+  const pool = global.pool ? global.pool :this.createConnectionPool(
+    db_config.host,
+    db_config.username,
+    db_config.password,
+    db_config.port,
+    db_config.database,db_config.pool);
     pool.getConnection(function(err,connection){
+    if(err){
+      console.log(err);
+    }
+    connection.query(sql,sqlValue,function(err, result){
       if(err){
         console.log(err);
       }
-      connection.query(sql,sqlValue,function(err, result){
-        if(err){
-          console.log(err);
+      if(result.length <= 0){
+        //not exist
+        res.send({
+          error:1,
+          msg:'error'
+        });
+      } else {
+        //exist
+        let violation = false;
+        if(global.users.length > 0){
+          for(let i = 0; i < global.users.length; i++){
+            if(n === global.users[i]){
+              violation = true;
+              break;
+            }
+          }
         }
-        if(result.length <= 0){
-          res.send({
-            error:1,
-            msg:'error'
-          });
-        } else {
-          //exist
+        if(!violation){
+          global.users.push(n);
           const user = {
             nickName:n
           };
@@ -164,24 +156,16 @@ app.post('/sign_in',function (req,res) {
             token:token,
             nickname:n
           });
+        }else{
+          res.send({
+            error:1,
+            msg:'violation'
+          });
         }
-      })
-    });
-  }
-
+      }
+    })
+  });
 });
-
-
-// app.post('/login',function (req,res) {
-//   const user = {
-//     id:1
-//   };
-//   const token = jwt.sign({user},'app secrete key');
-//   res.json({
-//     token:token
-//   });
-// });
-
 
 
 app.get('/page/protected',checkToken,function (req,res) {
