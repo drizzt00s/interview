@@ -6,6 +6,7 @@ import Register from '../components/register'
 import secrete from '../components/secrete'
 
 
+
 Vue.use(Router)
 
 export default new Router({

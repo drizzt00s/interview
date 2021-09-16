@@ -11,7 +11,8 @@ let store = new Vuex.Store({
       violation:"You cannot use other user's nickname to log in directly,please use your own account to log in or register a new nickname"
     },
     token:null,
-    isLogin:false
+    isLogin:false,
+    nickName:''
   },
   mutations:{
     exceptionHandle(state,errorType){
@@ -28,6 +29,13 @@ let store = new Vuex.Store({
     },
     setLoginStatus(state){
       state.isLogin = !state.isLogin;
+    },
+    getNickName(state){
+      return state.nickName;
+    },
+    setNickName(state,newNickName){
+
+      state.nickName = newNickName;
     }
   },
   actions:{

@@ -89,7 +89,8 @@ app.post('/sign_up',function(req,res){
           const token = jwt.sign({user},'app secrete key');
           res.json({
             error:0,
-            token:token
+            token:token,
+            nickname:n
           });
 
         });

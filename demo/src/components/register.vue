@@ -45,6 +45,7 @@ export default {
             const token = data.token;
             that.$store.commit('setToken',token);
             that.$store.commit('setLoginStatus');
+            that.$store.commit('setNickName',data.nickname);
           }
         }
       });
